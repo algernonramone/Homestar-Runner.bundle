@@ -1,30 +1,32 @@
-from PMS import *
+####################################################################################################
+
+HOMESTAR_PREFIX = "/video/homestarrunner"
+ART             = 'art-default.png'
+ICON            = 'icon-default.png'
 
 ####################################################################################################
 
-HOMESTAR_PREFIX                = "/video/homestarrunner"
-
-####################################################################################################
-
-class HRMenuContainer(MediaContainer):
-  def __init__(self, art = "art-default.png", viewGroup = "Menu", title1 = None, title2 = None, noHistory = False, replaceParent = False):
-    if title1 is None:
-      title1 = "Homestar Runner"
-    MediaContainer.__init__(self, art = R(art), viewGroup = viewGroup, title1 = title1, title2 = title2, noHistory = noHistory, replaceParent = replaceParent)
+#class HRMenuContainer(MediaContainer):
+#  def __init__(self, art = "art-default.png", viewGroup = "Menu", title1 = None, title2 = None, noHistory = False, replaceParent = False):
+#    if title1 is None:
+#      title1 = "Homestar Runner"
+#    MediaContainer.__init__(self, art = R(art), viewGroup = viewGroup, title1 = title1, title2 = title2, noHistory = noHistory, replaceParent = replaceParent)
     
 ####################################################################################################
 
 def Start():
 
-  HTTP.SetCacheTime(7200)
+  HTTP.CacheTime = 7200
   Plugin.AddPrefixHandler(HOMESTAR_PREFIX, MainMenu, "Homestar Runner", "icon-default.png", "art-default.png")
   Plugin.AddViewGroup("Menu", viewMode = "List", mediaType = "items")
+
+  MediaContainer.art = R(ART)
 
 ####################################################################################################
 
 def MainMenu():
   
-  dir = HRMenuContainer(title1 = "Homestar Runner")
+  dir = MediaContainer(title1 = "Homestar Runner", viewGroup='InfoList')
   
   dir.Append(Function(DirectoryItem(AddSeries, title = "Strong Bad Emails", thumb = R("icon-strongbademails.png")), series_id = "sb", thumb = R("icon-strongbademails.png")))
   dir.Append(Function(DirectoryItem(AddSeries, title = "Teen Girl Squad", thumb = R("icon-teengirlsquad.png")), series_id = "tgs", thumb = R("icon-teengirlsquad.png")))
@@ -41,7 +43,7 @@ def MainMenu():
 
 def AddSeries(sender, query = None, series_id = None, thumb = None):
 
-  dir = HRMenuContainer(title1 = sender.itemTitle)
+  dir = MediaContainer(title1 = sender.itemTitle, viewGroup='InfoList')
 
   thisXML = XML.ElementFromURL("http://www.homestarrunner.com/rando.xml", isHTML = True)
 

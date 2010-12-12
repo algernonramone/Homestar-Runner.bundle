@@ -19,7 +19,7 @@
 	<key>PlexClientPlatforms</key>
 	<string>MacOSX,iOS</string>
 	<key>PlexFrameworkVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>PlexPluginAuthor</key>
 	<string>Dave Addey</string>
 	<key>PlexPluginLanguage</key>
