@@ -17,7 +17,7 @@
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>PlexClientPlatforms</key>
-	<string>MacOSX</string>
+	<string>MacOSX,iOS</string>
 	<key>PlexFrameworkVersion</key>
 	<string>1</string>
 	<key>PlexPluginAuthor</key>
@@ -34,5 +34,7 @@
 	</array>
 	<key>PlexPluginType</key>
 	<string>Framework</string>
+	<key>PlexPluginDevMode</key>
+	<string>0</string>
 </dict>
 </plist>
