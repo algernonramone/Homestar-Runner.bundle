@@ -1,33 +1,32 @@
 ####################################################################################################
 
-HOMESTAR_PREFIX = "/video/homestarrunner"
-ART             = 'art-default.png'
-ICON            = 'icon-default.png'
+PREFIX = '/video/homestarrunner'
+TITLE  = 'Homestar Runner'
+ART    = 'art-default.jpg'
+ICON   = 'icon-default.png'
 
-####################################################################################################
-
-#class HRMenuContainer(MediaContainer):
-#  def __init__(self, art = "art-default.png", viewGroup = "Menu", title1 = None, title2 = None, noHistory = False, replaceParent = False):
-#    if title1 is None:
-#      title1 = "Homestar Runner"
-#    MediaContainer.__init__(self, art = R(art), viewGroup = viewGroup, title1 = title1, title2 = title2, noHistory = noHistory, replaceParent = replaceParent)
-    
 ####################################################################################################
 
 def Start():
 
-  HTTP.CacheTime = 7200
-  Plugin.AddPrefixHandler(HOMESTAR_PREFIX, MainMenu, "Homestar Runner", "icon-default.png", "art-default.png")
-  Plugin.AddViewGroup("Menu", viewMode = "List", mediaType = "items")
+  Plugin.AddPrefixHandler(PREFIX, MainMenu, TITLE, ICON, ART)
+  Plugin.AddViewGroup('InfoList', viewMode='InfoList', mediaType='items')
 
+  # Set the default MediaContainer attributes
+  MediaContainer.title1 = TITLE
+  MediaContainer.viewGroup = 'InfoList'
   MediaContainer.art = R(ART)
+  DirectoryItem.thumb = R(ICON)
+  WebVideoItem.thumb = R(ICON)
+
+  HTTP.CacheTime = 7200
 
 ####################################################################################################
 
 def MainMenu():
-  
-  dir = MediaContainer(title1 = "Homestar Runner", viewGroup='InfoList')
-  
+
+  dir = MediaContainer()
+
   dir.Append(Function(DirectoryItem(AddSeries, title = "Strong Bad Emails", thumb = R("icon-strongbademails.png")), series_id = "sb", thumb = R("icon-strongbademails.png")))
   dir.Append(Function(DirectoryItem(AddSeries, title = "Teen Girl Squad", thumb = R("icon-teengirlsquad.png")), series_id = "tgs", thumb = R("icon-teengirlsquad.png")))
   dir.Append(Function(DirectoryItem(AddSeries, title = "Answering Machines", thumb = R("icon-answeringmachine.png")), series_id = "am", thumb = R("icon-answeringmachine.png")))
@@ -36,31 +35,31 @@ def MainMenu():
   dir.Append(Function(DirectoryItem(AddSeries, title = "Holiday", thumb = R("icon-holiday.png")), series_id = "ho", thumb = R("icon-holiday.png")))
   dir.Append(Function(DirectoryItem(AddSeries, title = "Puppet Stuff", thumb = R("icon-puppetstuff.png")), series_id = "p", thumb = R("icon-puppetstuff.png")))
   dir.Append(Function(DirectoryItem(AddSeries, title = "Powered by The Cheat", thumb = R("icon-poweredbythecheat.png")), series_id = "teh", thumb = R("icon-poweredbythecheat.png")))
-  
+
   return dir
 
 ####################################################################################################
 
-def AddSeries(sender, query = None, series_id = None, thumb = None):
+def AddSeries(sender, series_id=None, thumb=None):
 
-  dir = MediaContainer(title1 = sender.itemTitle, viewGroup='InfoList')
+  dir = MediaContainer()
 
-  thisXML = XML.ElementFromURL("http://www.homestarrunner.com/rando.xml", isHTML = True)
+  thisXML = HTML.ElementFromURL('http://www.homestarrunner.com/rando.xml')
 
   emailCount = 0
 
   for child in thisXML:
     if child.tag == series_id:
       emailCount = emailCount + 1
-      if child.get("u"):
-        thisURL = "http://www.homestarrunner.com/" + child.get("u")
+      if child.get('u'):
+        thisURL = 'http://www.homestarrunner.com/' + child.get('u')
       else:
-        thisURL = "http://www.homestarrunner.com/sbemail" + str(emailCount) + ".html"
-      dir.Append(WebVideoItem(url = thisURL, title = str(emailCount) + ": " + child.get("n"), duration = 0, thumb = thumb))
-      
+        thisURL = 'http://www.homestarrunner.com/sbemail' + str(emailCount) + '.html'
+      dir.Append(WebVideoItem(url = thisURL, title = str(emailCount) + ': ' + child.get('n'), thumb = thumb))
+
   # reverse the order to put the most recent items first
   dir.Reverse()
-      
+
   return dir
-  
+
 ####################################################################################################

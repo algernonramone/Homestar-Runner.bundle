@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site site="http://www.homestarrunner.com/*"
-      plugin=".*?[^v]\.swf$"
-      initialState="playing"
-      version="1.0">
-      
+	plugin=".*?[^v]\.swf$"
+	initialState="playing"
+	version="1.0">
+
 	<state name="playing">
 		<event>
 			<condition>
-				<frameLoaded/>
+				<frameLoaded />
 			</condition>
 			<action>
-				<pause time="1000"/>
+				<pause time="1000" />
 			</action>
 		</event>
 	</state>
