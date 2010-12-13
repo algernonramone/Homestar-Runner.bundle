@@ -10,11 +10,11 @@ ICON   = 'icon-default.png'
 def Start():
 
   Plugin.AddPrefixHandler(PREFIX, MainMenu, TITLE, ICON, ART)
-  Plugin.AddViewGroup('InfoList', viewMode='InfoList', mediaType='items')
+  Plugin.AddViewGroup('List', viewMode='List', mediaType='items')
 
   # Set the default MediaContainer attributes
   MediaContainer.title1 = TITLE
-  MediaContainer.viewGroup = 'InfoList'
+  MediaContainer.viewGroup = 'List'
   MediaContainer.art = R(ART)
   DirectoryItem.thumb = R(ICON)
   WebVideoItem.thumb = R(ICON)
