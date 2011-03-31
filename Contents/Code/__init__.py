@@ -57,9 +57,10 @@ def AddSeries(sender, series_id=None, thumb=None):
         thisURL = 'http://www.homestarrunner.com/sbemail' + str(emailCount) + '.html'
       dir.Append(WebVideoItem(url = thisURL, title = str(emailCount) + ': ' + child.get('n'), thumb = thumb))
 
-  # reverse the order to put the most recent items first
-  dir.Reverse()
-
-  return dir
+  if len(dir) == 0:
+    return MessageContainer("Empty", "There aren't any items")
+  else:
+    # reverse the order to put the most recent items first
+    return dir.Reverse()
 
 ####################################################################################################
