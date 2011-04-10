@@ -42,25 +42,37 @@ def MainMenu():
 
 def AddSeries(sender, series_id=None, thumb=None):
 
-  dir = MediaContainer()
+  dir = MediaContainer(title2=sender.itemTitle)
 
-  thisXML = HTML.ElementFromURL('http://www.homestarrunner.com/rando.xml')
+  data = HTTP.Request('http://www.homestarrunner.com/rando.xml').content
+  #Rebuild the crappy XML as JSON
+  data = data.strip('<?xml version="1.0" encoding="iso-8859-1"?>')
+  data = data.replace('<!-- teen girl squad tgs-->', '').replace('<!-- answering machines am-->','').replace('<!-- shorts sh-->','').replace('<!-- big toons t-->','').replace('<!--holiday ho-->','').replace('<!--puppet stuff p-->','').replace('<!--- cheat stuff teh-->','').replace('<!-- sbemail sb-->','')
+  data = data.replace('<','{').replace('{!', '<!').replace('/>', '},').replace(' n=', ' "n":').replace(' u=', ', "u":').replace(' s=', ', "s":').replace(' new=',', "new":')
+  data = data.replace('{tgs ', '{"id":"tgs", ').replace('{am ', '{"id":"am", ').replace('{sh ', '{"id":"sh", ').replace('{t ', '{"id":"t", ').replace('{ho ', '{"id":"ho", ')
+  data = data.replace('{p ', '{"id":"p", ').replace('{teh ', '{"id":"teh", ').replace('{sb ', '{"id":"sb", ')
+  data = '[%s\n]' % data[:-3]
+  #parse the brand new JSON
+  thisJSON = JSON.ObjectFromString(data)
+  
 
   emailCount = 0
-
-  for child in thisXML:
-    if child.tag == series_id:
+  
+  for vid in thisJSON:
+    if vid['id'] == series_id:
       emailCount = emailCount + 1
-      if child.get('u'):
-        thisURL = 'http://www.homestarrunner.com/' + child.get('u')
-      else:
-        thisURL = 'http://www.homestarrunner.com/sbemail' + str(emailCount) + '.html'
-      dir.Append(WebVideoItem(url = thisURL, title = str(emailCount) + ': ' + child.get('n'), thumb = thumb))
+      try:
+        if vid['u']:
+          thisURL = 'http://www.homestarrunner.com/%s' % vid['u']
+      except:
+        thisURL = 'http://www.homestarrunner.com/sbemail%d.html' % emailCount
+      dir.Append(WebVideoItem(url = thisURL, title = str(emailCount) + ': ' + vid['n'], thumb = thumb))
 
   if len(dir) == 0:
     return MessageContainer("Empty", "There aren't any items")
   else:
     # reverse the order to put the most recent items first
-    return dir.Reverse()
+    dir.Reverse()
+    return dir
 
 ####################################################################################################
