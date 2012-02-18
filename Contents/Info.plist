@@ -20,6 +20,8 @@
 	<string>2</string>
 	<key>PlexPluginAuthor</key>
 	<string>Dave Addey</string>
+	<key>PlexClientPlatforms</key>
+	<string>*</string>
 	<key>PlexPluginMode</key>
 	<string>AlwaysOn</string>
 	<key>PlexMediaContainer</key>
