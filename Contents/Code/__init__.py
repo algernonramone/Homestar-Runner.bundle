@@ -18,6 +18,8 @@ def Start():
   MediaContainer.art = R(ART)
   DirectoryItem.thumb = R(ICON)
   WebVideoItem.thumb = R(ICON)
+  RTMPVideoItem.thumb = R(ICON)
+  
 
   HTTP.CacheTime = 7200
 
@@ -51,10 +53,10 @@ def AddSeries(sender, series_id=None, thumb=None):
   for vid in data.xpath('//'+series_id):
     emailCount = emailCount + 1
     if vid.get('u'):
-      thisURL = 'http://www.homestarrunner.com/' + vid.get('u')
+      thisclip = vid.get('u')
     else:
-      thisURL = 'http://www.homestarrunner.com/sbemail' + str(emailCount) + '.html'
-    dir.Append(WebVideoItem(url = thisURL, title = str(emailCount) + ': ' + vid.get('n'), thumb = thumb))
+      thisclip = 'sbemail' + str(emailCount) + '.swf'
+    dir.Append(RTMPVideoItem(url = 'http://www.homestarrunner.com/', clip = thisclip, title = str(emailCount) + ': ' + vid.get('n'), thumb = thumb))
 
   if len(dir) == 0:
     return MessageContainer("Empty", "There aren't any items")
@@ -63,3 +65,4 @@ def AddSeries(sender, series_id=None, thumb=None):
     dir.Reverse()
     return dir
 ####################################################################################################
+:
