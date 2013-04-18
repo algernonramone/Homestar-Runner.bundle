@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site site="http://www.homestarrunner.com/*"
-	plugin=".*?[^v]\.swf$"
+	plugin="http://www.plexapp.com/player/player.php?"
 	initialState="playing"
 	version="1.0">
 
